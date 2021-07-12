@@ -1,0 +1,79 @@
+﻿@model WebAPITest.Models.CustomerCategoriesTbl
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    //method to get all records
+    $(function () {
+        function GetByID()
+        {
+            $.ajax({
+                url: "/api/CustomerAPI/" + $("#CustomerCategoriesID").val(),
+                type: "Get",
+                contentType: "Application/json",
+                success: function (result) {                                  
+                    loadTable(result);                  
+                },
+                error: function (err) {
+                    alert("Error!");
+                }
+            });
+        }
+        $('select').on('click', function () {
+            GetByID();
+        });
+
+        function GetAll() {
+            //$.ajax({
+            //    url: "/api/CustomerAPI/",
+            //    type: "Get",
+            //    contentType: "Application/json",
+            //    success: function (result) {                   
+            //        var str = "";
+            //        $("#tb").empty();
+            //        loadTable(result);
+            //    },
+            //    error: function (err) {
+            //        alert("Error!");
+            //    }
+            //});
+        }
+
+        function loadTable(result) {
+            $("#tb").empty();
+            var str = "";
+            for (var i = 0; i < result.length; i++) {
+                str = "<tr><td>" + result[i].CustomerName + "</td>";
+                str += "<td>" + result[i].PrimaryContact + "</td>";
+                str += "<td>" + result[i].PhoneNumber + "</td>";
+                str += "<td>" + result[i].CustomerCategoriesName + "</td></tr>";
+                $("#tb").append(str);
+            }
+        }
+        GetAll();
+    
+    });
+</script>  
+<h2>Index</h2>
+<div class="form-group">
+    @Html.LabelFor(model => model.CustomerCategoriesID, "Customer Categories", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownList("CustomerCategoriesID", null, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CustomerCategoriesID, "", new { @class = "text-danger" })
+    </div>
+</div>
+<br />
+<br />
+<ul id="ulCustomers"></ul>
+<table class="table table-bordered" id="tbl" style="width:100%">
+        <thead style="background:#2f587c;color:white">
+            <tr>               
+                <th>Customer Name</th>              
+                <th>PrimaryContact</th>
+                <th>PhoneNumber</th>
+                <th>CustomerCategoriesName</th>
+            </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+    </table>

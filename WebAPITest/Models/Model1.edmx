@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="APIExDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomerCategoriesTbl">
+          <Key>
+            <PropertyRef Name="CustomerCategoriesID" />
+          </Key>
+          <Property Name="CustomerCategoriesID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerCategoriesName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" />
+          <Property Name="PrimaryContact" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CustomerCategoriesID" Type="bigint" />
+        </EntityType>
+        <Association Name="FK_CustomerTbl_CustomerCategoriesTbl">
+          <End Role="CustomerCategoriesTbl" Type="Self.CustomerCategoriesTbl" Multiplicity="0..1" />
+          <End Role="CustomerTbl" Type="Self.CustomerTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerCategoriesTbl">
+              <PropertyRef Name="CustomerCategoriesID" />
+            </Principal>
+            <Dependent Role="CustomerTbl">
+              <PropertyRef Name="CustomerCategoriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APIExDBModelStoreContainer">
+          <EntitySet Name="CustomerCategoriesTbl" EntityType="Self.CustomerCategoriesTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerTbl" EntityType="Self.CustomerTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CustomerTbl_CustomerCategoriesTbl" Association="Self.FK_CustomerTbl_CustomerCategoriesTbl">
+            <End Role="CustomerCategoriesTbl" EntitySet="CustomerCategoriesTbl" />
+            <End Role="CustomerTbl" EntitySet="CustomerTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APIExDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomerCategoriesTbl">
+          <Key>
+            <PropertyRef Name="CustomerCategoriesID" />
+          </Key>
+          <Property Name="CustomerCategoriesID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerCategoriesName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CustomerTbls" Relationship="Self.FK_CustomerTbl_CustomerCategoriesTbl" FromRole="CustomerCategoriesTbl" ToRole="CustomerTbl" />
+        </EntityType>
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryContact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerCategoriesID" Type="Int64" />
+          <NavigationProperty Name="CustomerCategoriesTbl" Relationship="Self.FK_CustomerTbl_CustomerCategoriesTbl" FromRole="CustomerTbl" ToRole="CustomerCategoriesTbl" />
+        </EntityType>
+        <Association Name="FK_CustomerTbl_CustomerCategoriesTbl">
+          <End Role="CustomerCategoriesTbl" Type="Self.CustomerCategoriesTbl" Multiplicity="0..1" />
+          <End Role="CustomerTbl" Type="Self.CustomerTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerCategoriesTbl">
+              <PropertyRef Name="CustomerCategoriesID" />
+            </Principal>
+            <Dependent Role="CustomerTbl">
+              <PropertyRef Name="CustomerCategoriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APIExDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerCategoriesTbls" EntityType="Self.CustomerCategoriesTbl" />
+          <EntitySet Name="CustomerTbls" EntityType="Self.CustomerTbl" />
+          <AssociationSet Name="FK_CustomerTbl_CustomerCategoriesTbl" Association="Self.FK_CustomerTbl_CustomerCategoriesTbl">
+            <End Role="CustomerCategoriesTbl" EntitySet="CustomerCategoriesTbls" />
+            <End Role="CustomerTbl" EntitySet="CustomerTbls" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APIExDBModelStoreContainer" CdmEntityContainer="APIExDBEntities">
+          <EntitySetMapping Name="CustomerCategoriesTbls">
+            <EntityTypeMapping TypeName="APIExDBModel.CustomerCategoriesTbl">
+              <MappingFragment StoreEntitySet="CustomerCategoriesTbl">
+                <ScalarProperty Name="CustomerCategoriesID" ColumnName="CustomerCategoriesID" />
+                <ScalarProperty Name="CustomerCategoriesName" ColumnName="CustomerCategoriesName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerTbls">
+            <EntityTypeMapping TypeName="APIExDBModel.CustomerTbl">
+              <MappingFragment StoreEntitySet="CustomerTbl">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="PrimaryContact" ColumnName="PrimaryContact" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CustomerCategoriesID" ColumnName="CustomerCategoriesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
